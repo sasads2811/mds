@@ -24,3 +24,13 @@ class EditRack(BaseModel):
     serial_number: Optional[str] = None
     total_units: Optional[int] = None
     max_power_watts: Optional[int] = None
+
+
+class AddDeviceRequest(BaseModel):
+    device_id: uuid.UUID
+
+
+class RackDeviceResponse(BaseModel):
+    device_id: uuid.UUID
+    start_unit: int
+    end_unit: int

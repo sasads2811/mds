@@ -7,7 +7,13 @@ from starlette.responses import JSONResponse
 from app.api.dependencies import get_db
 from app.infrastructure.repositories.rack_repo import RackRepository
 from app.services.rack_service import RackService
-from app.api.dtos.rack_dto import RackCreate, RackResponse, EditRack
+from app.api.dtos.rack_dto import (
+    RackCreate,
+    RackResponse,
+    EditRack,
+    RackDeviceResponse,
+    AddDeviceRequest,
+)
 
 
 def get_service(db: Session = Depends(get_db)):
@@ -64,5 +70,18 @@ def update_rack(
             total_units=data.total_units,
             max_power_watts=data.max_power_watts,
         )
+    except Exception as e:
+        return JSONResponse(status_code=400, content={"error": str(e)})
+
+
+@rack_router.post("/{rack_id}", response_model=RackDeviceResponse)
+def add_device(
+    rack_id: uuid.UUID,
+    data: AddDeviceRequest,
+    service: RackService = Depends(get_service),
+):
+    try:
+        return service.add_device_to_rack(rack_id, data.device_id)
+
     except Exception as e:
         return JSONResponse(status_code=400, content={"error": str(e)})
