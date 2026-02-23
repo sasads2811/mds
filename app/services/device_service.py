@@ -12,6 +12,9 @@ class DeviceService:
     def list_devices(self):
         return self.repo.get_all()
 
+    def get_device(self, device_id: uuid.UUID):
+        return self.repo.get_device_by_id(device_id=device_id)
+
     def create_device(
         self,
         name: str,

@@ -22,6 +22,11 @@ def get_devices(service: DeviceService = Depends(get_service)):
     return service.list_devices()
 
 
+@device_router.get("/{device_id}", response_model=DeviceResponse)
+def get_device(device_id: uuid.UUID, service: DeviceService = Depends(get_service)):
+    return service.get_device(device_id)
+
+
 @device_router.post("/create", response_model=DeviceResponse)
 def create_device(data: DeviceCreate, service: DeviceService = Depends(get_service)):
     try:
