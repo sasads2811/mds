@@ -17,7 +17,7 @@ def get_service(db: Session = Depends(get_db)):
     return DeviceService(repo)
 
 
-@device_router.get("/", response_model=list[DeviceResponse])
+@device_router.get("", response_model=list[DeviceResponse])
 def get_devices(service: DeviceService = Depends(get_service)):
     return service.list_devices()
 

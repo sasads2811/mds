@@ -43,15 +43,15 @@ class DeviceRepository:
         return device
 
     def save(self, device: Device) -> Device:
-        orm_device = self.session.get(DeviceModel, device.id)
+        result = self.session.get(DeviceModel, device.id)
 
-        orm_device.name = device.name
-        orm_device.description = device.description
-        orm_device.serial_number = device.serial_number
-        orm_device.rack_units = device.rack_units
-        orm_device.power_watts = device.power_watts
+        result.name = device.name
+        result.description = device.description
+        result.serial_number = device.serial_number
+        result.rack_units = device.rack_units
+        result.power_watts = device.power_watts
 
         self.session.commit()
-        self.session.refresh(orm_device)
+        self.session.refresh(result)
 
         return device
