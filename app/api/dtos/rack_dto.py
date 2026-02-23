@@ -11,6 +11,7 @@ class RackCreate(BaseModel):
     serial_number: str
     total_units: int
     max_power_watts: int
+    total_power_used: Optional[int] = None
 
 
 class RackResponse(RackCreate):

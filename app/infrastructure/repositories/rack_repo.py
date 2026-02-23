@@ -1,7 +1,7 @@
 import uuid
 from typing import List
 
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 from app.infrastructure.db.models import RackModel, DeviceModel, RackDeviceModel
 from app.domain.rack.entity import Rack
@@ -14,12 +14,32 @@ class RackRepository:
     def __init__(self, session: Session):
         self.session = session
 
-    def get_rack_by_id(self, rack_id: uuid.UUID) -> Rack:
-        q = select(RackModel).where(RackModel.id == rack_id)
+    def get_rack_by_id(self, rack_id: uuid.UUID):
+        q = (
+            select(
+                RackModel.id,
+                RackModel.name,
+                RackModel.description,
+                RackModel.total_units,
+                RackModel.max_power_watts,
+                RackModel.serial_number,
+                func.sum(DeviceModel.power_watts).label("total_power_used"),
+            )
+            .join(RackDeviceModel, RackModel.placements)
+            .join(DeviceModel, RackDeviceModel.device)
+            .where(RackModel.id == rack_id)
+        ).group_by(
+            RackModel.id,
+            RackModel.serial_number,
+            RackModel.name,
+            RackModel.description,
+            RackModel.total_units,
+            RackModel.max_power_watts,
+        )
 
         result = self.session.execute(q)
 
-        result = result.scalars().first()
+        result = result.first()
 
         return result
 
