@@ -1,4 +1,3 @@
-
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,7 +8,6 @@ from starlette import status
 
 from app.api.endpoints.device_api import device_router
 from app.api.endpoints.rack_api import rack_router
-
 
 app = FastAPI(
     title="MDS",
