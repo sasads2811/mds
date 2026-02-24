@@ -13,9 +13,9 @@ from app.api.dependencies import get_db
 from app.infrastructure.repositories.device_repo import DeviceRepository
 from app.infrastructure.repositories.rack_repo import RackRepository
 
-ADMIN_DB_URL = "postgresql+psycopg://postgres:postgres@localhost:5444/mydatabase"
+ADMIN_DB_URL = "postgresql+psycopg://postgres:postgres@db:5432/mydatabase"
 TEST_DB_NAME = "test_db"
-TEST_DB_URL = f"postgresql+psycopg://postgres:postgres@localhost:5444/{TEST_DB_NAME}"
+TEST_DB_URL = f"postgresql+psycopg://postgres:postgres@db:5432/{TEST_DB_NAME}"
 
 
 @pytest.fixture(scope="session", autouse=True)
