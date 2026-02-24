@@ -1,5 +1,5 @@
 import uuid
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel, ConfigDict
 
@@ -35,3 +35,9 @@ class RackDeviceResponse(BaseModel):
     device_id: uuid.UUID
     start_unit: int
     end_unit: int
+
+
+class BalanceRequest(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    devices: List[str]
+    racks: List[str]

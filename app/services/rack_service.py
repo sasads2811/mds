@@ -2,6 +2,7 @@ import uuid
 
 from app.domain.device.entity import Device
 from app.domain.rack.entity import Rack
+from app.domain.placement.entity import RackDevice
 from app.infrastructure.repositories.rack_repo import RackRepository
 
 
@@ -125,3 +126,27 @@ class RackService:
             start_unit=start_unit,
             end_unit=end_unit,
         )
+
+    def balance_rack(
+        self,
+        device_ids: list,
+        rack_ids: list,
+    ):
+        devices = self.repo.get_devices_by_ids(device_ids=device_ids)
+
+        if len(device_ids) != len(devices):
+            raise ValueError(f"Device not found")
+
+        racks = self.repo.get_racks_by_ids(rack_ids=rack_ids)
+
+        if len(rack_ids) != len(racks):
+            raise ValueError(f"Rack not found")
+
+        if sum([device.power_watts for device in devices]) > sum(
+            [rack.max_power_watts for rack in racks]
+        ):
+            raise ValueError("Rack power capacity exceeded")
+
+        result = RackDevice.balance_devices(devices=devices, racks=racks)
+
+        return result

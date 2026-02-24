@@ -123,3 +123,45 @@ class RackRepository:
         result = self.session.execute(q)
 
         return result.scalars().first()
+
+    def get_devices_by_ids(self, device_ids: list) -> List[Device]:
+        q = select(DeviceModel).where(DeviceModel.id.in_(device_ids))
+
+        result = self.session.execute(q)
+
+        models = result.scalars().all()
+
+        devices = [
+            Device(
+                id=m.id,
+                name=m.name,
+                description=m.description,
+                serial_number=m.serial_number,
+                power_watts=m.power_watts,
+                rack_units=m.rack_units,
+            )
+            for m in models
+        ]
+
+        return devices
+
+    def get_racks_by_ids(self, rack_ids: list) -> List[Rack]:
+        q = select(RackModel).where(RackModel.id.in_(rack_ids))
+
+        result = self.session.execute(q)
+
+        models = result.scalars().all()
+
+        racks = [
+            Rack(
+                id=m.id,
+                name=m.name,
+                description=m.description,
+                serial_number=m.serial_number,
+                max_power_watts=m.max_power_watts,
+                total_units=m.total_units,
+            )
+            for m in models
+        ]
+
+        return racks

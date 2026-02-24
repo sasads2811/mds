@@ -13,6 +13,7 @@ from app.api.dtos.rack_dto import (
     EditRack,
     RackDeviceResponse,
     AddDeviceRequest,
+    BalanceRequest,
 )
 
 
@@ -53,6 +54,14 @@ def create_rack(data: RackCreate, service: RackService = Depends(get_service)):
             max_power_watts=data.max_power_watts,
             total_units=data.total_units,
         )
+    except Exception as e:
+        return JSONResponse(status_code=400, content={"error": str(e)})
+
+
+@rack_router.post("/balance")
+def balance(data: BalanceRequest, service: RackService = Depends(get_service)):
+    try:
+        return service.balance_rack(device_ids=data.devices, rack_ids=data.racks)
     except Exception as e:
         return JSONResponse(status_code=400, content={"error": str(e)})
 
