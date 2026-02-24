@@ -18,7 +18,7 @@ TEST_DB_NAME = "test_db"
 TEST_DB_URL = f"postgresql+psycopg://postgres:postgres@db:5432/{TEST_DB_NAME}"
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session")
 def create_test_database():
     admin_engine = create_engine(ADMIN_DB_URL, isolation_level="AUTOCOMMIT")
 
@@ -35,7 +35,7 @@ def create_test_database():
 
 
 @pytest.fixture(scope="session")
-def engine():
+def engine(create_test_database):
     engine = create_engine(TEST_DB_URL)
     Base.metadata.create_all(bind=engine)
     yield engine

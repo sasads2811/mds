@@ -3,22 +3,19 @@ from app.domain.device.entity import Device
 from uuid import uuid4
 
 
-@pytest.mark.asyncio
-async def test_get_device_by_id(device_repository, device):
+def test_get_device_by_id(device_repository, device):
     data = device_repository.get_device_by_id(device.id)
     assert data.id == device.id
 
 
-@pytest.mark.asyncio
-async def test_get_all_devices(device_repository, device):
+def test_get_all_devices(device_repository, device):
     data = device_repository.get_all()
 
     assert len(data) > 0
     assert data[0].id == device.id
 
 
-@pytest.mark.asyncio
-async def test_create_device(device_repository):
+def test_create_device(device_repository):
     device = Device(
         id=uuid4(),
         name="Device Name",
@@ -31,8 +28,7 @@ async def test_create_device(device_repository):
     assert data.id == device.id
 
 
-@pytest.mark.asyncio
-async def test_save_device(device_repository, device):
+def test_save_device(device_repository, device):
     model = Device(
         id=device.id,
         name="Device Name",
