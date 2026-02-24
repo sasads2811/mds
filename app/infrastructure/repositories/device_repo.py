@@ -3,9 +3,10 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from app.infrastructure.db.models.device_model import DeviceModel
 from app.domain.device.entity import Device
+from app.infrastructure.repositories.base_device_repo import BaseDeviceRepository
 
 
-class DeviceRepository:
+class DeviceRepository(BaseDeviceRepository):
 
     def __init__(self, session: Session):
         self.session = session
