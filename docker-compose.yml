@@ -29,5 +29,18 @@ services:
     volumes:
       - ./app:/app/app
 
+  tests:
+    build: .
+    container_name: app-tests
+    depends_on:
+      - db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DATABASE: mydatabase
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: [ "pytest", "--asyncio-mode=auto", "tests/" ]
 volumes:
   postgres_data:
