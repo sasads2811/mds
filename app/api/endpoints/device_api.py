@@ -19,16 +19,50 @@ def get_service(db: Session = Depends(get_db)):
 
 @device_router.get("", response_model=list[DeviceResponse])
 def get_devices(service: DeviceService = Depends(get_service)):
+    """
+    ## Method is used for getting all devices.
+
+    ### Returns:
+    - **Success**: Returns list of devices.
+    - **Error**: A JSON error object with HTTP status code 400.
+    """
+
     return service.list_devices()
 
 
 @device_router.get("/{device_id}", response_model=DeviceResponse)
 def get_device(device_id: uuid.UUID, service: DeviceService = Depends(get_service)):
+    """
+    ## Method is used for getting device.
+
+    ### Parameters:
+    - `device_id`: The id of the category codebook.
+
+    ### Returns:
+    - **Success**: Returns device details.
+    - **Error**: A JSON error object with HTTP status code 400.
+    """
+
     return service.get_device(device_id)
 
 
 @device_router.post("/create", response_model=DeviceResponse)
 def create_device(data: DeviceCreate, service: DeviceService = Depends(get_service)):
+    """
+    ## Method is used for creating device.
+
+    ### Parameters:
+    - `name`: The name of device.
+    - `description`: The description of device.
+    - `serial_number`: The serial number of device.
+    - `rack_units`: The number of  rack units.
+    - `power_watts`: The power watts.
+
+    ### Returns:
+    - **Success**: Returns device details.
+    - **Error**: A JSON error object with HTTP status code 400.
+    """
+
     try:
         return service.create_device(
             name=data.name,
@@ -47,6 +81,21 @@ def edit_device(
     data: EditDevice,
     service: DeviceService = Depends(get_service),
 ):
+    """
+    ## Method is used for editing device.
+
+    ### Parameters:
+    - `name`: The name of device.
+    - `description`: The description of device.
+    - `serial_number`: The serial number of device.
+    - `rack_units`: The number of  rack units.
+    - `power_watts`: The power watts.
+
+    ### Returns:
+    - **Success**: Returns device details.
+    - **Error**: A JSON error object with HTTP status code 400.
+    """
+
     try:
         return service.edit_device(
             id=device_id,
